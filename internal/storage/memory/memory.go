@@ -9,7 +9,7 @@ import (
 	"github.com/usawyer/url-shortener/internal/models"
 )
 
-const cacheDuration = 1 * time.Minute
+const cacheDuration = 6 * time.Hour
 
 type RedisClient struct {
 	rd *redis.Client
