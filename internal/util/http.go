@@ -9,5 +9,8 @@ func JSON(w http.ResponseWriter, r *http.Request, statusCode int, obj any) {
 	w.WriteHeader(statusCode)
 	w.Header().Set("content-type", "application/json")
 	jsonBytes, _ := json.Marshal(obj)
-	w.Write(jsonBytes)
+	_, err := w.Write(jsonBytes)
+	if err != nil {
+		return
+	}
 }

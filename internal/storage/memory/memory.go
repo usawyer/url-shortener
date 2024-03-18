@@ -2,11 +2,11 @@ package memory
 
 import (
 	"context"
-	"errors"
 	"fmt"
+	"time"
+
 	"github.com/redis/go-redis/v9"
 	"github.com/usawyer/url-shortener/internal/models"
-	"time"
 )
 
 const cacheDuration = 1 * time.Minute
@@ -23,7 +23,7 @@ func (c *RedisClient) GetUrl(ctx context.Context, key string) (string, error) {
 	value, err := c.rd.Get(ctx, key).Result()
 	if err != nil {
 		if err == redis.Nil {
-			return "", errors.New(fmt.Sprintf("URL with alias \"%s\" doesn't found", key))
+			return "", fmt.Errorf("URL with alias \"%s\" doesn't found", key)
 		}
 		return "", err
 	}

@@ -23,7 +23,6 @@ func New(logger *zap.Logger) *Config {
 	logger.Info("initializing config")
 	var cfg Config
 	err := cleanenv.ReadEnv(&cfg)
-	//err := cleanenv.ReadConfig("config/.env", &cfg)
 	if err != nil {
 		logger.Fatal(err.Error())
 	}

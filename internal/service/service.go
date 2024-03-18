@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
+
 	"github.com/asaskevich/govalidator"
 	"github.com/pkg/errors"
 	"github.com/usawyer/url-shortener/internal/models"

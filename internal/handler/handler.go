@@ -3,11 +3,12 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	"github.com/usawyer/url-shortener/internal/models"
 	"github.com/usawyer/url-shortener/internal/service"
 	"github.com/usawyer/url-shortener/internal/util"
 	"go.uber.org/zap"
-	"net/http"
 )
 
 type Handler struct {
@@ -56,7 +57,7 @@ func (h *Handler) GetUrl(w http.ResponseWriter, r *http.Request) {
 	res, err := h.service.GetUrl(r.Context(), &req)
 	if err != nil {
 		h.logger.Error(err.Error())
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
 

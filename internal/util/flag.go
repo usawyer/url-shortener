@@ -2,14 +2,13 @@ package util
 
 import (
 	"errors"
-	"flag"
+	"os"
 )
 
 func ParseFlag() (string, error) {
-	flagStore := flag.String("d", "", "Storage to store")
-	flag.Parse()
+	flagStore := os.Getenv("STORAGE_FLAG")
 
-	switch *flagStore {
+	switch flagStore {
 	case "memory":
 		return "memory", nil
 	case "db":

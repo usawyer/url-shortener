@@ -1,14 +1,14 @@
 package app
 
 import (
-	"fmt"
+	"net"
+
 	"github.com/usawyer/url-shortener/internal/config"
 	"github.com/usawyer/url-shortener/internal/handler"
 	"github.com/usawyer/url-shortener/internal/router"
 	"github.com/usawyer/url-shortener/internal/service"
 	"github.com/usawyer/url-shortener/internal/storage"
 	"go.uber.org/zap"
-	"net"
 )
 
 type App struct {
@@ -34,7 +34,7 @@ func New(logger *zap.Logger, cfg *config.Config, storeType string) *App {
 }
 
 func (a *App) Run() {
-	a.Logger.Info(fmt.Sprintf("starting server"))
+	a.Logger.Info("starting server")
 	if err := a.Router.Run(net.JoinHostPort(a.Config.Host, a.Config.Port)); err != nil {
 		a.Logger.Fatal(err.Error())
 	}

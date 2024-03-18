@@ -7,11 +7,10 @@ services:
     container_name: srv
     env_file:
       - config/.env
+    environment:
+      - STORAGE_FLAG
     ports:
       - '8080:8080'
-    depends_on:
-      - db
-      - redis
 
   db:
     image: postgres:15.5-alpine3.18

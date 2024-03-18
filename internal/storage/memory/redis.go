@@ -2,10 +2,11 @@ package memory
 
 import (
 	"context"
+	"net"
+
 	"github.com/redis/go-redis/v9"
 	"github.com/usawyer/url-shortener/internal/config"
 	"go.uber.org/zap"
-	"net"
 )
 
 func New(logger *zap.Logger, cfg *config.Config) (*RedisClient, error) {

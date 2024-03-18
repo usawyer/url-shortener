@@ -1,8 +1,9 @@
 package router
 
 import (
-	"github.com/usawyer/url-shortener/internal/handler"
 	"net/http"
+
+	"github.com/usawyer/url-shortener/internal/handler"
 )
 
 type Router struct {
@@ -11,11 +12,6 @@ type Router struct {
 
 func New(h *handler.Handler) *Router {
 	mux := http.NewServeMux()
-
-	mux.HandleFunc("GET /ping", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("pong"))
-	})
 
 	mux.HandleFunc("POST /", h.CreateAlias)
 	mux.HandleFunc("GET /{alias}", h.GetUrl)

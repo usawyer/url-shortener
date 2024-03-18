@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"fmt"
+
 	"github.com/pkg/errors"
 	"github.com/usawyer/url-shortener/internal/models"
 	"gorm.io/gorm"
@@ -41,8 +42,5 @@ func (p *PostgresClient) findUrl(str string, columnName string) bool {
 	var url models.Urls
 	condition := fmt.Sprintf("%s = ?", columnName)
 	res := p.db.Where(condition, str).Find(&url)
-	if res.RowsAffected == 1 {
-		return true
-	}
-	return false
+	return res.RowsAffected == 1
 }

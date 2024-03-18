@@ -3,14 +3,15 @@ package db
 import (
 	"errors"
 	"fmt"
+	"strings"
+	"time"
+
 	"github.com/usawyer/url-shortener/internal/config"
 	"github.com/usawyer/url-shortener/internal/models"
 	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"moul.io/zapgorm2"
-	"strings"
-	"time"
 )
 
 func New(logger *zap.Logger, cfg *config.Config) (*PostgresClient, error) {
