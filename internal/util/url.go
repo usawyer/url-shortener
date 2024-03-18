@@ -1,6 +1,15 @@
 package util
 
-import "strings"
+import (
+	"github.com/usawyer/url-shortener/internal/models"
+	"strings"
+)
+
+func ToUrl(u *models.UrlsRequest) *models.Urls {
+	return &models.Urls{
+		Url: u.Url,
+	}
+}
 
 func StandardizeUrl(url string) string {
 	if url[:4] != "http" {

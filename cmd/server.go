@@ -14,10 +14,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	_ = storeType
 
 	cfg := config.New(log)
-
 	app := app.New(log, cfg, storeType)
 	app.Run()
 }

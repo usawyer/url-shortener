@@ -1,19 +1,34 @@
 package storage
 
+import (
+	"context"
+	"github.com/usawyer/url-shortener/internal/config"
+	"github.com/usawyer/url-shortener/internal/models"
+	db "github.com/usawyer/url-shortener/internal/storage/database"
+	"github.com/usawyer/url-shortener/internal/storage/memory"
+	"go.uber.org/zap"
+)
+
 type Storage interface {
+	AddUrl(context.Context, models.Urls) error
+	GetUrl(context.Context, string) (string, error)
 }
 
-//type Storage struct {
-//}
-
-func New(storageType string) *Storage {
+func New(storageType string, logger *zap.Logger, cfg *config.Config) Storage {
 	var store Storage
+	var err error
 	switch storageType {
 	case "memory":
-		store = 1
+		store, err = memory.New(logger, cfg)
+		if err != nil {
+			logger.Fatal(err.Error())
+		}
 	case "db":
-		store = 2
+		store, err = db.New(logger, cfg)
+		if err != nil {
+			logger.Fatal(err.Error())
+		}
 	}
 
-	return &store
+	return store
 }

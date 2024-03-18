@@ -16,18 +16,18 @@ type App struct {
 	Router *router.Router
 }
 
-func New(logger *zap.Logger, config *config.Config, storeType string) *App {
+func New(logger *zap.Logger, cfg *config.Config, storeType string) *App {
 	logger = logger.Named("App")
 
-	repository := storage.New(storeType)
-	service := service.New(repository)
-	handler := handler.New(service)
-	router := router.New(handler)
+	repository := storage.New(storeType, logger, cfg)
+	srvc := service.New(repository, logger)
+	hndlr := handler.New(srvc, logger)
+	rtr := router.New(hndlr)
 
 	return &App{
-		Config: config,
+		Config: cfg,
 		Logger: logger,
-		Router: router,
+		Router: rtr,
 	}
 
 }
