@@ -6,7 +6,7 @@ import (
 )
 
 func ParseFlag() (string, error) {
-	flagStore := flag.String("d", "memory", "Storage to store")
+	flagStore := flag.String("d", "", "Storage to store")
 	flag.Parse()
 
 	switch *flagStore {

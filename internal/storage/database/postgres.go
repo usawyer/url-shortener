@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-func New(logger *zap.Logger, cfg *config.Config) (*postgresClient, error) {
+func New(logger *zap.Logger, cfg *config.Config) (*PostgresClient, error) {
 	logger = logger.Named("PostgreSQL")
 	dsn := makeDsnStr(cfg)
 
@@ -30,7 +30,7 @@ func New(logger *zap.Logger, cfg *config.Config) (*postgresClient, error) {
 		logger.Info("migrate ok")
 	}
 
-	return &postgresClient{db: db}, err
+	return &PostgresClient{db: db}, err
 }
 
 func makeDsnStr(cfg *config.Config) string {

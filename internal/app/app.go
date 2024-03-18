@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"github.com/usawyer/url-shortener/internal/config"
 	"github.com/usawyer/url-shortener/internal/handler"
 	"github.com/usawyer/url-shortener/internal/router"
@@ -33,7 +34,7 @@ func New(logger *zap.Logger, cfg *config.Config, storeType string) *App {
 }
 
 func (a *App) Run() {
-	a.Logger.Info("starting server")
+	a.Logger.Info(fmt.Sprintf("starting server"))
 	if err := a.Router.Run(net.JoinHostPort(a.Config.Host, a.Config.Port)); err != nil {
 		a.Logger.Fatal(err.Error())
 	}

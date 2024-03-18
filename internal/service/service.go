@@ -4,10 +4,11 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
-	"errors"
 	"github.com/asaskevich/govalidator"
+	"github.com/pkg/errors"
 	"github.com/usawyer/url-shortener/internal/models"
 	"github.com/usawyer/url-shortener/internal/storage"
+	db "github.com/usawyer/url-shortener/internal/storage/database"
 	"github.com/usawyer/url-shortener/internal/util"
 	"go.uber.org/zap"
 )
@@ -46,8 +47,9 @@ func (s *Service) CreateAlias(ctx context.Context, req *models.UrlsRequest) (*mo
 	err := s.storage.AddUrl(ctx, url)
 
 	if err != nil {
-		s.logger.Warn("failed to set value in storage")
-		return nil, err
+		if err != db.ErrUrlExist {
+			return nil, errors.Wrap(err, "failed to set value in storage")
+		}
 	}
 
 	res := &models.UrlsResponse{
@@ -57,16 +59,14 @@ func (s *Service) CreateAlias(ctx context.Context, req *models.UrlsRequest) (*mo
 	return res, nil
 }
 
-func (s *Service) GetUrls(ctx context.Context, req *models.AliasRequest) (*models.AliasResponse, error) {
+func (s *Service) GetUrl(ctx context.Context, req *models.AliasRequest) (*models.AliasResponse, error) {
 	if len(req.Alias) != aliasLenght {
 		return nil, errors.New("invalid alias input")
 	}
 
 	longUrl, err := s.storage.GetUrl(ctx, req.Alias)
-
 	if err != nil {
-		s.logger.Warn("failed to get value from storage")
-		return nil, err
+		return nil, errors.Wrap(err, "failed to get value from storage")
 	}
 
 	res := &models.AliasResponse{

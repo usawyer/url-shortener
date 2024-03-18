@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/usawyer/url-shortener/internal/models"
 	"github.com/usawyer/url-shortener/internal/service"
 	"github.com/usawyer/url-shortener/internal/util"
@@ -27,39 +29,34 @@ func (h *Handler) CreateAlias(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	h.logger.Info("creating alias")
 	var req models.UrlsRequest
-	if ok := util.BindJSON(w, r, &req); !ok {
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.logger.Error(fmt.Sprintf("failed to decode request body err=%s", err.Error()))
+		http.Error(w, "invalid request body", http.StatusBadRequest)
 		return
 	}
 
 	res, err := h.service.CreateAlias(r.Context(), &req)
 	if err != nil {
 		h.logger.Error(err.Error())
-		// какая ошибка?
-
-		util.InternalServerError(w, r)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	util.JSON(w, r, http.StatusOK, res)
+	util.JSON(w, r, http.StatusCreated, res)
 }
 
 func (h *Handler) GetUrl(w http.ResponseWriter, r *http.Request) {
+	h.logger.Info("getting long url")
 	req := models.AliasRequest{
 		Alias: r.PathValue("alias"),
 	}
 
-	res, err := h.service.GetUrls(r.Context(), &req)
+	res, err := h.service.GetUrl(r.Context(), &req)
 	if err != nil {
 		h.logger.Error(err.Error())
-
-		//log.Printf("ERROR: failed to get actor err=%s\n", err.Error())
-		//if errors.Is(err, ErrIdInvalid) || errors.Is(err, ErrActorNotExist) {
-		//	util.NotFound(w, r)
-		//	return
-		//}
-
-		util.InternalServerError(w, r)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 

@@ -8,7 +8,7 @@ import (
 	"net"
 )
 
-func New(logger *zap.Logger, cfg *config.Config) (*redisClient, error) {
+func New(logger *zap.Logger, cfg *config.Config) (*RedisClient, error) {
 	logger = logger.Named("Redis")
 
 	client := redis.NewClient(&redis.Options{
@@ -23,5 +23,5 @@ func New(logger *zap.Logger, cfg *config.Config) (*redisClient, error) {
 		logger.Info("connected to Redis")
 	}
 
-	return &redisClient{rd: client}, err
+	return &RedisClient{rd: client}, err
 }

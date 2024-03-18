@@ -1,7 +1,7 @@
 package models
 
 type Urls struct {
-	Alias string `json:"alias"`
+	Alias string `json:"alias" gorm:"unique;not null"`
 	Url   string `json:"url"`
 }
 
@@ -10,8 +10,7 @@ type UrlsRequest struct {
 }
 
 type UrlsResponse struct {
-	Alias string `json:"alias,omitempty"`
-	Error string `json:"error,omitempty"`
+	Alias string `json:"alias"`
 }
 
 type AliasRequest struct {
@@ -19,6 +18,5 @@ type AliasRequest struct {
 }
 
 type AliasResponse struct {
-	Url   string `json:"url,omitempty"`
-	Error string `json:"error,omitempty"`
+	Url string `json:"url"`
 }
